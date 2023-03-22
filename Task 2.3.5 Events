@@ -1,0 +1,96 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/Ownable.sol"; 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+
+//StudentDiscordID = BobZedF#2556
+//Task 2.3.5 Events
+//I included event ProfileUpdated() but there was no profile to update
+//The I added the code frpm 2.3.3 about UserDetails and made that the UserProfile
+//See L84 for warning message from compiler that I didn't address yet
+
+contract YourContract is Ownable {
+
+    struct UserProfile {
+        string name;
+        uint256 age;
+    }
+
+     mapping(address => UserProfile) public _userProfile;
+
+
+    //Create a deposit function that allows anybody to send funds. 
+    //Store the user and the amount in a mapping as the previous task.
+    
+    mapping(address => uint256) public balance;
+    
+    event FundsDeposited(address indexed user, uint256 amount);
+    event ProfileUpdated(UserProfile userProfile);
+
+    function firstDeposit(string calldata _name, uint256 _age, uint256 _uint) public {
+        balance[msg.sender] += _uint;
+        _userProfile[msg.sender] = UserProfile(_name, _age);
+        UserProfile memory _userProfile = UserProfile(_name, _age);
+        emit FundsDeposited(msg.sender, _uint);
+        emit ProfileUpdated(_userProfile);
+        }
+
+    
+    //Add a withdraw function and create a modifier that only allows the owner 
+    //of the contract to withdraw the funds.
+    //inherits onlyOwner from @openzeppelin/contracts/access/Ownable.sol
+    
+    function withdraw(uint256 _uint) public onlyOwner {
+        balance[msg.sender] -= _uint;
+        
+    }
+    
+    //create a modifier that only allows users that have deposited using the deposit function, 
+    //to increase their balance on the mapping. 
+    modifier ifDeposited() {
+        require(balance[msg.sender] !=0, "need balance");
+         _;
+    }
+    
+    //Create a private constant variable called Fee
+    uint256 fee = 100; 
+
+    //Create a modifier that accepts a value(uint256 _amount)
+    //In the modifier check if the value(_amount) it accepts is less than the Fee, 
+    //revert with a custom error AmountToSmall()
+    
+    modifier valueFee(uint256 _amount) {
+        require(_amount > fee, "AmountTooSmall");
+        _;
+    }
+
+    //Add an addFund function 
+    //The function should accept the amount to be added and update the mapping to have the new balance
+    //if their balance is zero on the mapping, it should revert
+
+    function addFund(uint256 _amount) public ifDeposited valueFee(_amount) {
+        balance[msg.sender] += _amount;
+        emit FundsDeposited(msg.sender, _amount);
+    }
+    
+    function getProfile() public view returns 
+        (UserProfile memory) {
+        return _userProfile[msg.sender];
+        }
+  
+  /**
+Warning: This declaration shadows an existing declaration.
+  --> contracts/YourContract.sol:35:9:
+   |
+35 |         UserProfile memory _userProfile = UserProfile(_name, _age);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Note: The shadowed declaration is here:
+  --> contracts/YourContract.sol:21:6:
+   |
+21 |      mapping(address => UserProfile) public _userProfile;
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  */
+   
+}
