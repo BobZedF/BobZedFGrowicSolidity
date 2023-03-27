@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 //StudentDiscordID = BobZedF#2556
 //Task 2.3.5 Events
-//I included event ProfileUpdated() but there was no profile to update
-//The I added the code frpm 2.3.3 about UserDetails and made that the UserProfile
-//See L84 for warning message from compiler that I didn't address yet
+//I added the code from task 2.3.3 Stucts about UserDetails and made that the UserProfile
+//I included updateUserProfile() LL78-82 by adapting code written for task 2.3.3 Structs
+//I didn't address the warning messages from the compiler about the declarations on LL 35 and 80 shadowing that on L21
 
 contract YourContract is Ownable {
 
@@ -73,6 +73,12 @@ contract YourContract is Ownable {
     function addFund(uint256 _amount) public ifDeposited valueFee(_amount) {
         balance[msg.sender] += _amount;
         emit FundsDeposited(msg.sender, _amount);
+    }
+    
+     function updateUserProfile(string calldata _name, uint256 _age) public {
+        _userProfile[msg.sender] = UserProfile(_name, _age);
+        UserProfile memory _userProfile = UserProfile(_name, _age);
+        emit ProfileUpdated(_userProfile);
     }
     
     function getProfile() public view returns 
