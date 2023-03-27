@@ -18,8 +18,12 @@ function deposit(uint256 _uint) public {
     balance[msg.sender] += _uint;
 }
 
-function checkBalance() public returns (uint256) {
-    return msg.sender.balance;
+//tagged the function with view as requested since function only returns a value and does not modify contract state
+//I still however can't read the balance without manually entering msg.sender 
+//changed msg.sender.balance to balance[msg.sender]so as to NOT return the balance of msg.sender's wallet
+
+function checkBalance() public view returns (uint256) {
+    return balance[msg.sender];
 }
 
     
