@@ -1,0 +1,91 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/Ownable.sol"; 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+
+contract YourContract is Ownable {
+
+//Task 2.3.1 Primitive Data Types
+//StudentDiscordID = BobZedF#2556
+
+// 1. Example of signed integer type + use case
+
+//declare signed integers and their values
+    int256 public amount1;
+    int256 public amount2;
+    
+//function to multiply together the 2 signed integers
+    function multiply1(int256 _amount1, int256 _amount2) public returns (int256) {
+        int256 result1 = _amount1 * _amount2;
+        return result1;
+        // I didn't yet work out how to store and visualise result1
+    }
+
+
+
+// 2. Example of unsigned integer type + use case 
+
+//declare unsigned integers and their values
+    uint256 public amount3;
+    uint256 public amount4;
+    
+//function to add together the 2 signed integers
+    function add1(uint256 _amount3, uint256 _amount4) public returns (uint256) {
+        uint256 result2 = _amount3 + _amount4;
+        return result2;
+        // I didn't yet work out how to store and visualise result2
+    }
+
+
+
+
+
+
+
+
+ // 3. Example of boolean and address + use case   
+    // I'm calling the function from an address other than that of Bob but I'm not seeing the error message.
+
+    //create error message
+     error WrongAddress();
+
+    address public Bob = 0xDb391C0C82E881430b58A7f0a75523154a3904C6;
+
+    function compare(uint256 _amount5, uint256 _amount6) public view returns (bool) {
+        if (msg.sender != Bob) {
+        revert WrongAddress();
+        }
+        return _amount5 == _amount6;
+    }
+
+// 4. Example of Enum + use case
+
+enum FavouriteColour {blue, red, pink, orange, yellow}
+
+    FavouriteColour public favouriteColour;
+
+	function setFavouriteColour(FavouriteColour colour) public {
+    favouriteColour = colour;
+    }
+
+//  It works but the value shows rather than the colour  
+//  A later step would be to show the actual colour
+
+
+//5. Example of Bytes + use case
+
+//The contract below only seems to accept 0x00 as input parameter.  
+//To get it to accept a regular name like 'Bob' ChatGPT says I should use string data.
+
+
+    bytes public Winner;
+
+    function setWinner(bytes memory _winner) public {
+        Winner = _winner;
+    }
+
+
+
+}
