@@ -1,0 +1,50 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol"; 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+
+
+//@title  - Task 2.3.9 Contructor
+//@author - StudentDiscordID = BobZedF#2556
+//@notice - The code compiles in Scaffold-ETH but doesn't seem to deploy properly - see screenshots
+          - The code compiles and deploys locally using Remix
+
+
+/**
+@notice - contractA{} is here called YourContract so as not to change deployer script
+        - should have a variable called owner and it should be immutable
+        - set the owner as the person deploying the contract in the constructor
+*/
+  contract YourContract {
+
+  address public immutable OWNERA;
+  uint public Fee;
+
+  constructor(uint _fee) {
+    OWNERA = msg.sender;
+    Fee = _fee;
+  }
+}
+
+/**
+@notice - ContractB{} 
+        - inherits A
+        - receives the required constructor parameters that A requires
+        - has an owner variable that is set in the constructor
+*/
+
+  contract ContractB is YourContract { 
+    
+    address public _ownerB;
+    
+    constructor(uint _fee) YourContract(_fee) {
+      _ownerB = msg.sender;
+  }
+
+//Create a function that returns each variable that was set in contract A from contract B
+    function getFee() public view returns (uint) {
+      return Fee;
+    }
+  }
