@@ -1,0 +1,45 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/Ownable.sol"; 
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
+
+//StudentDiscordID = BobZedF#2556
+//Task 2.3.3 Structs v2 after seeing Discord
+// I can't remove is Ownable without the contract not working so I've left it
+
+contract YourContract is Ownable {
+
+    struct UserDetails {
+        string name;
+        uint256 age;
+    }
+
+     mapping(address => UserDetails) public _userDetails;
+
+
+    function setUserDetails(string calldata name, uint256 age) public {
+        _userDetails[msg.sender] = UserDetails(name, age);
+    
+    }
+
+    
+    function getUserDetail() public view returns 
+        (UserDetails memory) {
+        return _userDetails[msg.sender];
+        }
+      
+    
+    mapping(address => uint256) public balance;
+
+    function deposit(uint256 _uint) public {
+    balance[msg.sender] += _uint;
+    }
+
+    function checkBalance() public returns (uint256) {
+    return msg.sender.balance;
+    }
+
+    
+}
