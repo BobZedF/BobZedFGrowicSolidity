@@ -5,38 +5,47 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol"; 
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
 
-//StudentDiscordID = BobZedF#2556
-//Task 2.3.3 Structs v2 after seeing Discord
-// I can't remove is Ownable without the contract not working so I've left it
+
+/**
+@title  - Task 2.3.3 Structs (v2 after seeing some chat in the Discord)
+@author - StudentDiscordID = BobZedF#2556
+@notice - Extends the functionality of the previous task by allowing users to save their additional info 
+        - into the smart contract as a KYC measure.
+*/
+
 
 contract YourContract is Ownable {
 
+    // Define a struct that represent the details of the user calling the smart contract
     struct UserDetails {
         string name;
         uint256 age;
     }
-
+    
+    // Define a mapping between the user's address and UserDetails
      mapping(address => UserDetails) public _userDetails;
 
-
+    // Save user details
     function setUserDetails(string calldata name, uint256 age) public {
         _userDetails[msg.sender] = UserDetails(name, age);
     
     }
 
-    
+    // Retrieves and returns the details saved for the user calling the contract.
     function getUserDetail() public view returns 
         (UserDetails memory) {
         return _userDetails[msg.sender];
         }
       
-    
+    // Define a mapping between the user's address and balance
     mapping(address => uint256) public balance;
 
+    // Add to the balance of the user
     function deposit(uint256 _uint) public {
     balance[msg.sender] += _uint;
     }
 
+    // Retrieves and returns the user's balance
     function checkBalance() public returns (uint256) {
     return msg.sender.balance;
     }
