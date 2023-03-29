@@ -1,0 +1,39 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+
+/**
+@title  - Task 2.3.8 Fallback
+@author - StudentDiscordID = BobZedF#2556
+@notice - Create the fallback function 
+        - Make sure when a user transfers ETH to the smart contract, the transaction does not get reverted 
+        - Contract address:  0xCc759Be7fcdBfa3DDf92Ddac1A605B5119a7be6A
+        - Tx hash for transfer of funds to the contract without revert: 0x8c5f90428407e70b84f00059165ec5473e8af562320d5a2aa8d89f3ee1ed246d
+*/
+
+
+
+contract YourContract  {
+
+// Define a mapping between the user's address and the user's balance
+mapping(address => uint256) public balance;
+
+// Create a deposit function that allows anybody to send funds.
+function deposit(uint256 _uint) public {
+    balance[msg.sender] += _uint;
+}
+
+// Retrieve and display the balance of funds for a given user/wallet address
+function checkBalance() public view returns (uint256) {
+    return balance[msg.sender];
+}
+
+// fallback to allow anyone to send Ether directly to the contract
+fallback() external payable{}
+
+// if Ether is sent directly to the contract and msg.data ie empty then this function ensures 
+// that the Ether is deposited to the contract
+receive () external payable{}
+    
+}
