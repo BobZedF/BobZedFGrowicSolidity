@@ -1,0 +1,29 @@
+pragma solidity >=0.8.0 <0.9.0;
+//SPDX-License-Identifier: MIT
+
+import "hardhat/console.sol";
+
+/**
+@title  - Task 2.3.7 Payable
+@author - StudentDiscordID = BobZedF#2556
+@notice - Re-write the deposit function from the ‘Mappings’ topic
+        - Allow users to send real ETH deposits by adding a payable function.
+        - Re-write deposit() to accept no arguments but receive real ETH deposits and still save and update user balance
+*/
+
+contract YourContract  {
+
+// Define a mapping between the user's address and the user's balance
+mapping(address => uint256) public balance;
+
+// the deposit function adds the value deposited (derived from msg.value) to the user's balance
+function deposit () public payable {
+    balance[msg.sender] += msg.value;
+}
+
+function checkBalance() public view returns (uint256) {
+    return balance[msg.sender];
+}
+
+    
+}
